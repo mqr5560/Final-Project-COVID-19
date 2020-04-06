@@ -198,7 +198,6 @@ library(DataComputing)</code></pre>
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
-<pre class="r"><code>library(ggplot2)</code></pre>
 <div id="guided-question" class="section level2">
 <h2>Guided Question</h2>
 <p>For my research, I am primarily interested in looking at different countries responses to COVID-19. Throughout the project, I will use COVID-19 to refer to the novel coronvirus that is currently causing an ongoing pandemic.</p>
@@ -225,7 +224,7 @@ GlobalConfirmed &lt;- read.csv(&quot;https://data.humdata.org/hxlproxy/data/down
 <div id="what-does-a-case-represent-in-each-data-source" class="section level3">
 <h3>What does a case represent in each data source?</h3>
 <p>For each of the data sources, the cases are similar. Each row of the data tables are representative of a specific geographical area. For many, it represents a single country but for larger countries a row may pertain to a specific province or region within the country. Each of the columns represents a date. The numbers for each specific case varies across data tables. The tables I will be using track the total number of deaths, current cases, and total recovered. Furthermore, the data tables contain information regarding the iso3 code of the countries as well as what continent they reside on.</p>
-<pre class="r"><code>head(GlobalConfirmed)</code></pre>
+<pre class="r"><code>head(GlobalConfirmed) #for one data table </code></pre>
 <pre><code>##   Province.State Country.Region      Lat     Long X1.22.20 X1.23.20
 ## 1     #adm1+name  #country+name #geo+lat #geo+lon       NA       NA
 ## 2                   Afghanistan     33.0     65.0        0        0
@@ -317,14 +316,32 @@ GlobalConfirmed &lt;- read.csv(&quot;https://data.humdata.org/hxlproxy/data/down
 ## 4                          
 ## 5                          
 ## 6             Middle Africa</code></pre>
+<pre class="r"><code>#not going to load in the other two, but they are associcated with recovered and deaths</code></pre>
 </div>
 <div id="how-many-total-cases-what-variables-plan-to-be-use" class="section level3">
 <h3>How Many Total Cases? What variables plan to be use?</h3>
-<p>There are 264 cases, and aforementioned I plan on using the numbers associated with total deaths, total current cases, and total recovered.</p>
+<p>There are 263 cases, and aforementioned I plan on using the numbers associated with total deaths, total current cases, and total recovered.</p>
+<pre class="r"><code>nrow(GlobalConfirmed)</code></pre>
+<pre><code>## [1] 263</code></pre>
 </div>
 </div>
 <div id="explore-intuition-related-to-research-question" class="section level2">
 <h2>Explore Intuition Related to Research Question</h2>
+<div id="informative-plot" class="section level3">
+<h3>Informative Plot</h3>
+<p>I am going to make an initial plot looking at the total cases based on regions of the world. First, I need to group by the region name and summarise for totals.</p>
+<pre class="r"><code>GlobalConfirmed1&lt;-
+GlobalConfirmed%&gt;%
+  group_by(Region.Name)%&gt;%
+  summarise(totalconfirmed = sum((X4.5.20))) #total confirmed cases based on region 
+ 
+GlobalConfirmed1&lt;-
+ GlobalConfirmed1[-2,] #remove unneeded row</code></pre>
+</div>
+<div id="preliminary-observation" class="section level3">
+<h3>Preliminary Observation</h3>
+<p>At this point in time, looking at the graph above it is clear that Europe has the most cases. The scale is not adjusted, and it is pretty primitive as it only shows a screenshot of case numbers from today April 5th, and does not show a change over time. However, it does show that Asia, which includes China, was able to contain the virus based on the data we currently have. This simple graph alludes to the idea that Asian counties sucessfully curbed the virus through their public health measures, especially because they have higher populations with regards to the rest of the world.</p>
+</div>
 </div>
 <div id="two-data-sources" class="section level2">
 <h2>Two Data Sources</h2>
