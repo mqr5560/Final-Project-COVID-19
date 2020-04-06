@@ -1,0 +1,29 @@
+---
+title: "Final Project- COVID 19"
+author: "Molly Robertson"
+date: "4/5/2020"
+output: html_document
+---
+
+#Final Project Preliminary EDA
+
+##Guided Question 
+
+For my research, I am primarily interested in looking at different countries responses to COVID-19. Throughout the project, I will use COVID-19 to refer to the novel coronvirus that is currently causing an ongoing pandemic.
+
+Currently,  my overarching question is: What responses were the best at curbing the spread of the coronaviruses? When accounting for differences in population numbers, what country did the best job at containing the virus? 
+
+##Becoming Acquainted With The Data Sources 
+
+###Where did I find them? 
+-Humanitarian Data Exchange Website, which is a service provided by the United Nations Office for the Coordination of Humanitarian Affairs. 
+
+###Who collects and maintains them? 
+The Johns Hopkins University Center for Systems Science and Engineering updates the information in these data bases multiple times per day. 
+
+###When & Why were they originally collected?
+These databases help to keep track of the location and spread of SARs-COV-2 by highlighting new cases baesd on geographic locations. This helps global health care workers and members of the general population informed of disease hot spots and the current progression of the disease around the world. Because this outbreak is ongoing, the database will continue to be updated for months to come. 
+
+###What does a case represent in each data source? 
+For each of the data sources, the cases are similar. Each row of the data tables are representative of a specific geographical area. For many, it represents a single country but for larger countries a row may pertain to a specific province or region within the country. Each of the columns represents a date. The numbers for each specific case varies across data tables. The tables I will be using track the total number of deaths, current cases, and total recovered. Furthermore, the data tables contain information regarding the iso3 code of the countries as well as what continent they reside on. 
+
