@@ -109,6 +109,7 @@ head(GlobalConfirmedWide)
 Afterwards, I combined the same countries together so that each case represented one country completley. 
 
 ```{r}
+GlobalConfirmedWide1<-
 GlobalConfirmedWide%>%
   group_by(Country.Region)%>%
   summarise(S1.22.30 =sum(X1.22.20), S1.23.20 =sum(X1.23.20), S1.24.20 =sum(X1.24.20), S1.25.20 =sum(X1.25.20), S1.26.20 =sum(X1.26.20), S1.27.20 =sum(X1.27.20), S1.28.20 =sum(X1.28.20), S1.29.20 =sum(X1.29.20), S1.30.20 =sum(X1.30.20), S1.31.20 =sum(X1.31.20), S2.1.20 =sum(X2.1.20), S2.2.20 =sum(X2.2.20), S2.3.20 =sum(X2.3.20), S2.4.20 =sum(X2.4.20), S2.5.20 =sum(X2.5.20), S2.6.20 =sum(X2.6.20), S2.7.20 =sum(X2.7.20), S2.8.20 =sum(X2.8.20), S2.9.20 =sum(X2.9.20), S2.10.20 =sum(X2.10.20), S2.11.20 =sum(X2.11.20), S2.12.20 =sum(X2.12.20), S2.13.20 =sum(X2.13.20), S2.14.20 =sum(X2.14.20), S2.15.20 =sum(X2.15.20), S2.16.20 =sum(X2.16.20), S2.17.20 =sum(X2.17.20), S2.18.20 =sum(X2.18.20), S2.19.20 =sum(X2.19.20), S2.20.20 =sum(X2.20.20), S2.21.20 =sum(X2.21.20), S2.22.20 =sum(X2.22.20), S2.23.20 =sum(X2.23.20), S2.24.20 =sum(X2.24.20), S2.25.20 =sum(X2.25.20), S2.26.20 =sum(X2.26.20), S2.27.20 =sum(X2.27.20), S2.28.20 =sum(X2.28.20), S2.29.20 =sum(X2.29.20), S3.1.20 =sum(X3.1.20), S3.2.20 =sum(X3.2.20), S3.3.20 =sum(X3.3.20), S3.4.20 =sum(X3.4.20), S3.5.20 =sum(X3.5.20), S3.6.20 =sum(X3.6.20), S3.7.20 =sum(X3.7.20), S3.8.20 =sum(X3.8.20), S3.9.20 =sum(X3.9.20), S3.10.20 =sum(X3.10.20), S3.11.20 =sum(X3.11.20), S3.12.20 =sum(X3.12.20), S3.13.20 =sum(X3.13.20), S3.14.20 =sum(X3.14.20), S3.15.20 =sum(X3.15.20), S3.16.20 =sum(X3.16.20), S3.17.20 =sum(X3.18.20), S3.19.20 =sum(X3.19.20), S3.20.20 =sum(X3.20.20), S3.21.20 =sum(X3.21.20), S3.22.20 =sum(X3.22.20), S3.23.20 =sum(X3.23.20), S3.24.20 =sum(X3.24.20), S3.25.20 =sum(X3.25.20), S3.26.20 =sum(X3.26.20), S3.27.20 =sum(X3.27.20), S3.28.20 =sum(X3.28.20), S3.29.20 =sum(X3.29.20), S3.30.20 =sum(X3.30.20), S3.31.20 =sum(X3.31.20), S4.1.20 =sum(X4.1.20), S4.2.20 =sum(X4.2.20), S4.3.20 =sum(X4.3.20), S4.4.20 =sum(X4.4.20), S4.5.20 =sum(X4.5.20), S4.6.20 =sum(X4.6.20), S4.7.20 =sum(X4.7.20), S4.8.20 =sum(X4.8.20), S4.9.20 =sum(X4.9.20), S4.10.20 =sum(X4.10.20), S4.11.20 =sum(X4.11.20)) #to combine countries together that had various cases per province 
@@ -116,11 +117,11 @@ GlobalConfirmedWide%>%
 
 Next, I wanted the dates as the cases and the countries as the variables, so I transposed the data table. 
 ```{r}
-GlobalConfirmedWide1<-
-  t(GlobalConfirmedWide)
-GlobalConfirmedWide1<-
-  GlobalConfirmedWide1[,-1] #removes blank first column 
-head(GlobalConfirmedWide1) #only showing output for this first one because they are long 
+GlobalConfirmedWide2<-
+  t(GlobalConfirmedWide1)
+GlobalConfirmedWide2<-
+  GlobalConfirmedWide2[,-1] #removes blank first column 
+head(GlobalConfirmedWide2) #only showing output for this first one because they are long 
 ```
 
 Now, I can use this data to create graphs that show changes in confirmed cases per country over time. 
@@ -134,16 +135,17 @@ GlobalDeathsWide<-
 ```
 
 ```{r}
+GlobalDeathsWide1<-
 GlobalDeathsWide%>%
   group_by(Country.Region)%>%
   summarise(S1.22.30 =sum(X1.22.20), S1.23.20 =sum(X1.23.20), S1.24.20 =sum(X1.24.20), S1.25.20 =sum(X1.25.20), S1.26.20 =sum(X1.26.20), S1.27.20 =sum(X1.27.20), S1.28.20 =sum(X1.28.20), S1.29.20 =sum(X1.29.20), S1.30.20 =sum(X1.30.20), S1.31.20 =sum(X1.31.20), S2.1.20 =sum(X2.1.20), S2.2.20 =sum(X2.2.20), S2.3.20 =sum(X2.3.20), S2.4.20 =sum(X2.4.20), S2.5.20 =sum(X2.5.20), S2.6.20 =sum(X2.6.20), S2.7.20 =sum(X2.7.20), S2.8.20 =sum(X2.8.20), S2.9.20 =sum(X2.9.20), S2.10.20 =sum(X2.10.20), S2.11.20 =sum(X2.11.20), S2.12.20 =sum(X2.12.20), S2.13.20 =sum(X2.13.20), S2.14.20 =sum(X2.14.20), S2.15.20 =sum(X2.15.20), S2.16.20 =sum(X2.16.20), S2.17.20 =sum(X2.17.20), S2.18.20 =sum(X2.18.20), S2.19.20 =sum(X2.19.20), S2.20.20 =sum(X2.20.20), S2.21.20 =sum(X2.21.20), S2.22.20 =sum(X2.22.20), S2.23.20 =sum(X2.23.20), S2.24.20 =sum(X2.24.20), S2.25.20 =sum(X2.25.20), S2.26.20 =sum(X2.26.20), S2.27.20 =sum(X2.27.20), S2.28.20 =sum(X2.28.20), S2.29.20 =sum(X2.29.20), S3.1.20 =sum(X3.1.20), S3.2.20 =sum(X3.2.20), S3.3.20 =sum(X3.3.20), S3.4.20 =sum(X3.4.20), S3.5.20 =sum(X3.5.20), S3.6.20 =sum(X3.6.20), S3.7.20 =sum(X3.7.20), S3.8.20 =sum(X3.8.20), S3.9.20 =sum(X3.9.20), S3.10.20 =sum(X3.10.20), S3.11.20 =sum(X3.11.20), S3.12.20 =sum(X3.12.20), S3.13.20 =sum(X3.13.20), S3.14.20 =sum(X3.14.20), S3.15.20 =sum(X3.15.20), S3.16.20 =sum(X3.16.20), S3.17.20 =sum(X3.18.20), S3.19.20 =sum(X3.19.20), S3.20.20 =sum(X3.20.20), S3.21.20 =sum(X3.21.20), S3.22.20 =sum(X3.22.20), S3.23.20 =sum(X3.23.20), S3.24.20 =sum(X3.24.20), S3.25.20 =sum(X3.25.20), S3.26.20 =sum(X3.26.20), S3.27.20 =sum(X3.27.20), S3.28.20 =sum(X3.28.20), S3.29.20 =sum(X3.29.20), S3.30.20 =sum(X3.30.20), S3.31.20 =sum(X3.31.20), S4.1.20 =sum(X4.1.20), S4.2.20 =sum(X4.2.20), S4.3.20 =sum(X4.3.20), S4.4.20 =sum(X4.4.20), S4.5.20 =sum(X4.5.20), S4.6.20 =sum(X4.6.20), S4.7.20 =sum(X4.7.20), S4.8.20 =sum(X4.8.20), S4.9.20 =sum(X4.9.20), S4.10.20 =sum(X4.10.20), S4.11.20 =sum(X4.11.20)) #this added up countries together that had multiple cases due to various provinces
 ```
 
 ```{r}
-GlobalDeathsWide1<-
-  t(GlobalDeathsWide)
-GlobalDeathsWide1<-
-  GlobalDeathsWide1[,-1] #removes blank first column 
+GlobalDeathsWide2<-
+  t(GlobalDeathsWide1)
+GlobalDeathsWide2<-
+  GlobalDeathsWide2[,-1] #removes blank first column 
 ```
 
 
@@ -155,34 +157,40 @@ GlobalRecoveredWide<-
 ```
 
 ```{r}
+GlobalRecoveredWide1<-
 GlobalRecoveredWide%>%
   group_by(Country.Region)%>%
   summarise(S1.22.30 =sum(X1.22.20), S1.23.20 =sum(X1.23.20), S1.24.20 =sum(X1.24.20), S1.25.20 =sum(X1.25.20), S1.26.20 =sum(X1.26.20), S1.27.20 =sum(X1.27.20), S1.28.20 =sum(X1.28.20), S1.29.20 =sum(X1.29.20), S1.30.20 =sum(X1.30.20), S1.31.20 =sum(X1.31.20), S2.1.20 =sum(X2.1.20), S2.2.20 =sum(X2.2.20), S2.3.20 =sum(X2.3.20), S2.4.20 =sum(X2.4.20), S2.5.20 =sum(X2.5.20), S2.6.20 =sum(X2.6.20), S2.7.20 =sum(X2.7.20), S2.8.20 =sum(X2.8.20), S2.9.20 =sum(X2.9.20), S2.10.20 =sum(X2.10.20), S2.11.20 =sum(X2.11.20), S2.12.20 =sum(X2.12.20), S2.13.20 =sum(X2.13.20), S2.14.20 =sum(X2.14.20), S2.15.20 =sum(X2.15.20), S2.16.20 =sum(X2.16.20), S2.17.20 =sum(X2.17.20), S2.18.20 =sum(X2.18.20), S2.19.20 =sum(X2.19.20), S2.20.20 =sum(X2.20.20), S2.21.20 =sum(X2.21.20), S2.22.20 =sum(X2.22.20), S2.23.20 =sum(X2.23.20), S2.24.20 =sum(X2.24.20), S2.25.20 =sum(X2.25.20), S2.26.20 =sum(X2.26.20), S2.27.20 =sum(X2.27.20), S2.28.20 =sum(X2.28.20), S2.29.20 =sum(X2.29.20), S3.1.20 =sum(X3.1.20), S3.2.20 =sum(X3.2.20), S3.3.20 =sum(X3.3.20), S3.4.20 =sum(X3.4.20), S3.5.20 =sum(X3.5.20), S3.6.20 =sum(X3.6.20), S3.7.20 =sum(X3.7.20), S3.8.20 =sum(X3.8.20), S3.9.20 =sum(X3.9.20), S3.10.20 =sum(X3.10.20), S3.11.20 =sum(X3.11.20), S3.12.20 =sum(X3.12.20), S3.13.20 =sum(X3.13.20), S3.14.20 =sum(X3.14.20), S3.15.20 =sum(X3.15.20), S3.16.20 =sum(X3.16.20), S3.17.20 =sum(X3.18.20), S3.19.20 =sum(X3.19.20), S3.20.20 =sum(X3.20.20), S3.21.20 =sum(X3.21.20), S3.22.20 =sum(X3.22.20), S3.23.20 =sum(X3.23.20), S3.24.20 =sum(X3.24.20), S3.25.20 =sum(X3.25.20), S3.26.20 =sum(X3.26.20), S3.27.20 =sum(X3.27.20), S3.28.20 =sum(X3.28.20), S3.29.20 =sum(X3.29.20), S3.30.20 =sum(X3.30.20), S3.31.20 =sum(X3.31.20), S4.1.20 =sum(X4.1.20), S4.2.20 =sum(X4.2.20), S4.3.20 =sum(X4.3.20), S4.4.20 =sum(X4.4.20), S4.5.20 =sum(X4.5.20), S4.6.20 =sum(X4.6.20), S4.7.20 =sum(X4.7.20), S4.8.20 =sum(X4.8.20), S4.9.20 =sum(X4.9.20), S4.10.20 =sum(X4.10.20), S4.11.20 =sum(X4.11.20)) #this added up countries together that had multiple cases due to various provinces
 ```
 
 ```{r}
-GlobalRecoveredWide1<-
-  t(GlobalRecoveredWide)
-GlobalRecoveredWide1<-
-  GlobalRecoveredWide1[,-1] #removes blank first column 
+GlobalRecoveredWide2<-
+  t(GlobalRecoveredWide1)
+GlobalRecoveredWide2<-
+  GlobalRecoveredWide2[,-1]
+```
+
+###Comparing Countries 
+
+For right now, I am going to only look at three different countries responses to coronavirus: China, South Korea, and the United States. 
+
+To begin, the three countries have to be filtered from the rest of the data tables. 
+
+```{r}
+
 ```
 
 
+I have not finished yet, but I plan on creating a few graphs of China, South Korea, and the United States that show the change in total deaths, recovered patients, and confirmed cases. Once I do that, I am going to add in vertical bars that show when different measures were implemented, such as self-quarantining or widespread testing, and show how each impacted these numbers in the countries. After that is completed, I am going to create a heat map of the world which shows which countries have the most cases as of April 11th, 2020. By comparing the different strategies, I will hope to evaluate their usefulness. 
+
+Would love feedback on anything else I should include! 
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
+.
 
 
 
