@@ -1,11 +1,13 @@
 ---
-title: "Final Project- COVID 19"
+title: "Final Project Peer Review Draft"
 author: "Molly Robertson"
-date: "4/5/2020"
+date: "4/12/2020"
 output: html_document
 ---
 
-#Final Project Preliminary EDA
+#Final Project Peer Review Draft 
+
+Topic Overview: As an immunology and infectious disease major, I am interested in looking at various countries response to coronavirus from December 2019 to current. I would look at the total number of cases as they grew, as well as the response measurements and then the decline. Specifically, I would want to see which measures had the greatest impact on slowing down the case numbers, and identify which countries did a good job.  
 
 ```{r} 
 #Load In Necessary Packages
@@ -13,17 +15,7 @@ library(DataComputing)
 
 ```
 
-##Guided Question
-
-For my research, I am primarily interested in looking at different countries responses to COVID-19. Throughout the project, I will use COVID-19 to refer to the novel coronvirus that is currently causing an ongoing pandemic.
-
-Currently,  my overarching question is: What public health responses were the best at curbing the spread of the coronaviruses? When accounting for differences in population numbers, what country did the best job at containing the virus? 
-
-##Becoming Acquainted With The Data Sources 
-
-###Where did I find them? 
--Humanitarian Data Exchange Website, or HDX, which is a service provided by the United Nations Office for the Coordination of Humanitarian Affairs. 
-
+###Loading In Data 
 ```{r}
 #Rename Data Tables
 GlobalRecovered <- read.csv("https://data.humdata.org/hxlproxy/data/download/time_series_covid19_recovered_global_iso3_regions.csv?dest=data_edit&filter01=merge&merge-url01=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D1326629740%26single%3Dtrue%26output%3Dcsv&merge-keys01=%23country%2Bname&merge-tags01=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&filter02=merge&merge-url02=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D398158223%26single%3Dtrue%26output%3Dcsv&merge-keys02=%23adm1%2Bname&merge-tags02=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&merge-replace02=on&merge-overwrite02=on&tagger-match-all=on&tagger-01-header=province%2Fstate&tagger-01-tag=%23adm1%2Bname&tagger-02-header=country%2Fregion&tagger-02-tag=%23country%2Bname&tagger-03-header=lat&tagger-03-tag=%23geo%2Blat&tagger-04-header=long&tagger-04-tag=%23geo%2Blon&header-row=1&url=https%3A%2F%2Fraw.githubusercontent.com%2FCSSEGISandData%2FCOVID-19%2Fmaster%2Fcsse_covid_19_data%2Fcsse_covid_19_time_series%2Ftime_series_covid19_recovered_global.csv")
@@ -31,57 +23,96 @@ GlobalDeaths<- read.csv("https://data.humdata.org/hxlproxy/data/download/time_se
 GlobalConfirmed <- read.csv("https://data.humdata.org/hxlproxy/data/download/time_series_covid19_confirmed_global_iso3_regions.csv?dest=data_edit&filter01=merge&merge-url01=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D1326629740%26single%3Dtrue%26output%3Dcsv&merge-keys01=%23country%2Bname&merge-tags01=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&filter02=merge&merge-url02=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D398158223%26single%3Dtrue%26output%3Dcsv&merge-keys02=%23adm1%2Bname&merge-tags02=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&merge-replace02=on&merge-overwrite02=on&tagger-match-all=on&tagger-01-header=province%2Fstate&tagger-01-tag=%23adm1%2Bname&tagger-02-header=country%2Fregion&tagger-02-tag=%23country%2Bname&tagger-03-header=lat&tagger-03-tag=%23geo%2Blat&tagger-04-header=long&tagger-04-tag=%23geo%2Blon&header-row=1&url=https%3A%2F%2Fraw.githubusercontent.com%2FCSSEGISandData%2FCOVID-19%2Fmaster%2Fcsse_covid_19_data%2Fcsse_covid_19_time_series%2Ftime_series_covid19_confirmed_global.csv")
 ```
 
-###Who collects and maintains them? 
-The Johns Hopkins University Center for Systems Science and Engineering updates the information in these data bases multiple times per day. Specifically, Michael Rans updates the information. 
 
-###When & Why were they originally collected?
-These databases help to keep track of the location and spread of SARs-COV-2 by highlighting new cases baesd on geographic locations. This helps global health care workers and members of the general population informed of disease hot spots and the current progression of the disease around the world. Because this outbreak is ongoing, the database will continue to be updated for months to come. 
-
-###What does a case represent in each data source? 
-For each of the data sources, the cases are similar. Each row of the data tables are representative of a specific geographical area. For many, it represents a single country but for larger countries a row may pertain to a specific province or region within the country. Each of the columns represents a date. The numbers for each specific case varies across data tables. The tables I will be using track the total number of deaths, current cases, and total recovered. Furthermore, the data tables contain information regarding the iso3 code of the countries as well as what continent they reside on. 
-
-```{r}
-head(GlobalConfirmed) #for one data table 
-#not going to load in the other two, but they are associcated with recovered and deaths
-
-```
-
-###How Many Total Cases? What variables plan to be use? 
-There are 263 cases, and aforementioned I plan on using the numbers associated with total deaths, total current cases, and total recovered. 
-
-```{r}
-nrow(GlobalConfirmed)
-```
-
-##Explore Intuition Related to Research Question 
-
-###Informative Plot 
-I am going to make an initial plot looking at the total cases based on regions of the world. First, I need to group by the region name and summarise for totals. 
+###Looking at Grand Totals by Worldwide Region
+At the most basic level, I wanted to look at the total confirmed cases, deaths, and recovered based on regions. The regions in the dataset are Africa, Americas, Asia, Europe and Oceania. 
+First, is the table and graph for confirmed cases, followed by deaths and then recovered. 
 ```{r}
 GlobalConfirmed1<-
 GlobalConfirmed%>%
   group_by(Region.Name)%>%
-  summarise(totalconfirmed = sum((X4.5.20))) #total confirmed cases based on region 
- 
+  summarise(totalconfirmed = sum((X4.11.20)))
 GlobalConfirmed1<-
- GlobalConfirmed1[-2,] #remove unneeded row
-
-#here I had used barGraphHelper(GlobalConfirmed1) to generate a primitive graph of the data
-#when I went to convert to HTML it was failing everytime, will obviously fix for final project 
+ GlobalConfirmed1[-2,]
+GlobalConfirmed1<-
+  GlobalConfirmed1[-1,]
+head(GlobalConfirmed1)
 ```
 
+```{r}
+GlobalConfirmed1%>%
+  ggplot(aes(x=Region.Name, y=totalconfirmed)) +
+  geom_bar(stat = "identity",aes(color=Region.Name, fill=Region.Name)) +
+  ggtitle("Total Confirmed Cases by Region") +
+  ylim(0, 875000)
+```
 
-###Preliminary Observation
-
-At this point in time, looking at the graph above it is clear that Europe has the most cases. The scale is not adjusted, and it is pretty primitive as it only shows a screenshot of case numbers from today April 5th, and does not show a change over time. However, it does show that Asia, which includes China, was able to contain the virus based on the data we currently have. This simple graph alludes to the idea that Asian counties sucessfully curbed the virus through their public health measures, especially because they have higher populations with regards to the rest of the world. 
+Looking at the graph above, it appears as though Europe has the most cases with the Americas behind. These graphs need to be further divided to get the entire picture, as the majority of cases in the Americas are in the United States. Certain regions are dominated by certains countries. 
 
 
-##Two Data Sources 
+```{r}
+GlobalDeaths1<-
+GlobalDeaths%>%
+  group_by(Region.Name)%>%
+  summarise(Total_Deaths = sum((X4.11.20)))
+GlobalDeaths1<-
+ GlobalDeaths1[-2,] #get rid of useless row
+GlobalDeaths1<-
+  GlobalDeaths1[-1,] #get rid of useless row 
+head(GlobalDeaths1)
+```
 
-Primary Data Source: Multiple Data Tables found here in CSV downloadable format through HDX.  [https://data.humdata.org/dataset/novel-coronavirus-2019-ncov-cases]
+```{r}
+GlobalDeaths1%>%
+  ggplot(aes(x=Region.Name, y=Total_Deaths)) +
+  geom_bar(stat = "identity",aes(color=Region.Name, fill=Region.Name)) +
+  ggtitle("Total Deaths by Region") +
+  ylim(0, 75000)
+```
 
-Secondary Data Source: World Health Organization (WHO) Daily Situation Reports. These countain total confirmed cases, total new confirmed cases (from the previous day), total deaths, total new deaths, transmission classification, and days since last reported case. Countries and territories are divided into geographical subsets as well. However, the data table is in a pdf and would need to be converted over to be used in R. 
-[https://www.who.int/emergencies/diseases/novel-coronavirus-2019/situation-reports/]
+Unfortunately, Europe has the highest total number of deaths as well. It must be noted that many European countries are a few weeks ahead of the outbreak in the Americas, specifically the United States so this can change. These graphs also do not take into account total proportion of a population that have been infected, these are just pure counts. 
+
+```{r}
+GlobalRecovered1<-
+GlobalRecovered%>%
+  group_by(Region.Name)%>%
+  summarise(Total_Recovered = sum((X4.11.20)))
+GlobalRecovered1<-
+ GlobalRecovered1[-2,]
+GlobalRecovered1<-
+  GlobalRecovered1[-1,]
+head(GlobalRecovered1)
+```
+
+```{r}
+GlobalRecovered1%>%
+  ggplot(aes(x=Region.Name, y=Total_Recovered)) +
+  geom_bar(stat = "identity",aes(color=Region.Name, fill=Region.Name)) +
+  ggtitle("Total Recovered by Region")
+```
+
+Upliftingly, Europe does also have the highest amount of total recovered. Sadly, the Americas is still low on the recovered as we are nearing the peak of the outbreak in the United States. If the data we currently have is correct, the Asia region was able to contain their outbreak, mostly China, and keep deaths relatively low with recoveries high. 
+
+
+These graphs are fairly basic, and do not give us great insight into the outbreak. To further investigate this pandemic, it is necessary to look at a few countries from each of the regions, and their specific plan to combat the spread of the coronavirus. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
