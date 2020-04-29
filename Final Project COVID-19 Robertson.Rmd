@@ -214,8 +214,8 @@ CountriesDeaths<- #create a data table with 3 countries deaths
   select(China, Germany, US)%>%
   mutate(Dates = gsub("S", "", rownames(GlobalDeathsWide2)))
 CountriesDeaths$Dates<- as.Date(CountriesDeaths$Dates, "%m.%d.%y")
-CountriesDeathsChina<-as.numeric(CountriesDeaths$China) #change from factor to numeric 
-CountriesDeathsGermany<-as.numeric(CountriesDeaths$Germany)
+CountriesDeaths$China<-as.numeric(CountriesDeaths$China) #change from factor to numeric 
+CountriesDeaths$Germany<-as.numeric(CountriesDeaths$Germany)
 CountriesDeaths$US<-as.numeric(CountriesDeaths$US)
 
 CountriesConfirmed<- #create a data table with 3 countries confirmed cases 
@@ -234,13 +234,87 @@ head(CountriesConfirmed)
 
 Now that the US, China, and Germany have been filtered out with all the variables being correctly renamed, some analysis can be done. 
 
+####Confirmed Cases 
+
 ```{r}
 CountriesConfirmed%>%
   ggplot(aes(x=Dates, y=US)) +
-  geom_smooth()
+  geom_smooth() + 
+  ggtitle("US Daily Confirmed Cases") +
+  geom_vline(xintercept = as.Date("2020-03-13"), color= "red") #date of social distancing/quarantine 
 ```
 
-The graph above shows the total number of 
+The graph above shows the total number of new cases per day in the United States. After the inital trend, down there was an explosion of cases. This makes sense as the incubation time, which is how long until a person can present clinical symptoms of the disease, can be up to 14 days. The intial lag is due to people not knowing they were sick. The United States implemented social distancing protocols and quarantine on about March 13th, 2020. 
+
+
+```{r}
+CountriesConfirmed%>%
+  ggplot(aes(x=Dates, y=China)) +
+  geom_smooth() + 
+  ggtitle("China Daily Confirmed Cases") +
+  geom_vline(xintercept = as.Date("2020-01-23"), color= "red")+ #strict quarantine date 
+  geom_vline(xintercept = as.Date("2020-04-07") , color= "green") #date of stage 1 reopening
+```
+
+Looking at the data above, China implemented a very strict quarantine on their entire country. Citizens were not allowed to leave their homes at all, and police delivered goods and necessary items to people's homes. This strict protocol paid off for China, as their cases numbers dropped drastically while the country was able to sanitize itself of the virus. It is necessary to point out that the country was ahead of the United States for the timeline of the virus, however. China announced they were reopening to the public on April 7th, as shown by the green line. 
+
+```{r}
+CountriesConfirmed%>%
+  ggplot(aes(x=Dates, y=Germany)) +
+  geom_smooth() + 
+  ggtitle("Germany Daily Confirmed Cases") +
+  geom_vline(xintercept = as.Date("2020-03-13"), color = "purple") + #protective stage date 
+  geom_vline(xintercept = as.Date("2020-03-22", color= "red")) #national curfew date
+```
+
+Initially,  Germany did not put into place any protocol to try to contain the virus. After pressure and mounting cases, they entered Germany into a protective stage. This closed nursing homes from the public and stopped early education from occuring. However, cases still rose as shown in the graph, so they put a national curfew over the country. This prevented non-essential trips from citizens and helped to drop the case numbers down. 
+
+
+####Deaths by Country 
+
+After looking at the new cases per day, I wanted to look at the deaths per country as this provides more insight into the country response. The United States has private healthcare while Germany has universal healthcare and China has a mixture of both. 
+
+```{r}
+CountriesDeaths%>%
+   ggplot(aes(x=Dates, y=US)) +
+  geom_smooth() + 
+  ggtitle("US Daily Deaths") +
+  geom_vline(xintercept = as.Date("2020-03-13"), color= "black") #date of social distancing/quarantine 
+
+```
+
+The line still consists of the social distancing date in the US. The deaths are continuing to skyrocket, which makes sense as of the incubation period and severity of the virus. Deaths are still continuing to rise. The United States has an entirely private healthcare system. 
+
+```{r}
+CountriesDeaths%>%
+ggplot(aes(x=Dates, y=China)) +
+  geom_smooth() + 
+  ggtitle("China Daily Deaths") +
+  geom_vline(xintercept = as.Date("2020-01-23"), color= "red")+ #strict quarantine date 
+  geom_vline(xintercept = as.Date("2020-04-07") , color= "green") #date of stage 1 reopening 
+```
+
+China's deaths were able to drastically drop following quarantine procedures. It is interesting to note that they have a mixture of public and private healthcare systems. 
+
+```{r}
+CountriesDeaths%>%
+  ggplot(aes(x=Dates, y=Germany)) +
+  geom_smooth() + 
+  ggtitle("Germany Daily Deaths") +
+  geom_vline(xintercept = as.Date("2020-03-13"), color = "purple") + #protective stage date 
+  geom_vline(xintercept = as.Date("2020-03-22", color= "red")) #national curfew date
+```
+
+Germany's deaths are still skyrocketing, as of April 11th, which is to be expected as their country protocols were implemented later into the disease outbreak. Germany has a universal healthcare system. 
+
+
+###Conclusions 
+
+With regards to my research question, it appears as those China's strict quarantine was the best at containing the spread of the virus, as of April 11th. There may be more data that comes out in the future, revealing true cases numbers from countries around the world, but right now it appears as though China is in the clear and is in the beginning stages of opening its society. For countries like Germany, and the US, measures were not implemented early enough and cases rose afterwards that could have been contained. 
+
+Althouh difficult, a strict quarantine that allows for a country to sanitize properly appears to be the best option in fighting the virus. These measures would be difficult in the United States due to the massive size, and enabling such protocols may go against personal rights established in laws. 
+
+When looking at new death totals per day, it appears as though China has the virus under control which supports the total confirmed case number data. Moving forward, I would love to look at the differences in healthcare among the countries more and see if that has any effect on the severity of disease burden across the three different countries. 
 
 
 
@@ -249,7 +323,7 @@ The graph above shows the total number of
 
 
 
-.
+
 
 
 
