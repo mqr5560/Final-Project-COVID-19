@@ -1,0 +1,256 @@
+---
+title: "Final Project COVID-19"
+author: "Molly Robertson"
+date: "4/12/2020"
+output: html_document
+---
+
+#Final Project COVID-19 
+
+Topic Overview: As an immunology and infectious disease major, I am interested in looking at various countries response to coronavirus from December 2019 to April 11th. I would look at the total number of cases as they grew, as well as the number of total recovered and total deaths. Specifically, I would want to see if any measures had an impact on slowing down the case numbers, and compare a few different countries in their response. 
+
+```{r} 
+#Load In Necessary Packages
+library(DataComputing)
+library(tidyr)
+```
+
+###Loading In Data 
+```{r}
+#Rename Data Tables
+GlobalRecovered <- read.csv("https://data.humdata.org/hxlproxy/data/download/time_series_covid19_recovered_global_iso3_regions.csv?dest=data_edit&filter01=merge&merge-url01=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D1326629740%26single%3Dtrue%26output%3Dcsv&merge-keys01=%23country%2Bname&merge-tags01=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&filter02=merge&merge-url02=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D398158223%26single%3Dtrue%26output%3Dcsv&merge-keys02=%23adm1%2Bname&merge-tags02=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&merge-replace02=on&merge-overwrite02=on&tagger-match-all=on&tagger-01-header=province%2Fstate&tagger-01-tag=%23adm1%2Bname&tagger-02-header=country%2Fregion&tagger-02-tag=%23country%2Bname&tagger-03-header=lat&tagger-03-tag=%23geo%2Blat&tagger-04-header=long&tagger-04-tag=%23geo%2Blon&header-row=1&url=https%3A%2F%2Fraw.githubusercontent.com%2FCSSEGISandData%2FCOVID-19%2Fmaster%2Fcsse_covid_19_data%2Fcsse_covid_19_time_series%2Ftime_series_covid19_recovered_global.csv")
+GlobalDeaths<- read.csv("https://data.humdata.org/hxlproxy/data/download/time_series_covid19_deaths_global_iso3_regions.csv?dest=data_edit&filter01=merge&merge-url01=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D1326629740%26single%3Dtrue%26output%3Dcsv&merge-keys01=%23country%2Bname&merge-tags01=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&filter02=merge&merge-url02=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D398158223%26single%3Dtrue%26output%3Dcsv&merge-keys02=%23adm1%2Bname&merge-tags02=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&merge-replace02=on&merge-overwrite02=on&tagger-match-all=on&tagger-01-header=province%2Fstate&tagger-01-tag=%23adm1%2Bname&tagger-02-header=country%2Fregion&tagger-02-tag=%23country%2Bname&tagger-03-header=lat&tagger-03-tag=%23geo%2Blat&tagger-04-header=long&tagger-04-tag=%23geo%2Blon&header-row=1&url=https%3A%2F%2Fraw.githubusercontent.com%2FCSSEGISandData%2FCOVID-19%2Fmaster%2Fcsse_covid_19_data%2Fcsse_covid_19_time_series%2Ftime_series_covid19_deaths_global.csv")
+GlobalConfirmed <- read.csv("https://data.humdata.org/hxlproxy/data/download/time_series_covid19_confirmed_global_iso3_regions.csv?dest=data_edit&filter01=merge&merge-url01=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D1326629740%26single%3Dtrue%26output%3Dcsv&merge-keys01=%23country%2Bname&merge-tags01=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&filter02=merge&merge-url02=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vTglKQRXpkKSErDiWG6ycqEth32MY0reMuVGhaslImLjfuLU0EUgyyu2e-3vKDArjqGX7dXEBV8FJ4f%2Fpub%3Fgid%3D398158223%26single%3Dtrue%26output%3Dcsv&merge-keys02=%23adm1%2Bname&merge-tags02=%23country%2Bcode%2C%23region%2Bmain%2Bcode%2C%23region%2Bmain%2Bname%2C%23region%2Bsub%2Bcode%2C%23region%2Bsub%2Bname%2C%23region%2Bintermediate%2Bcode%2C%23region%2Bintermediate%2Bname&merge-replace02=on&merge-overwrite02=on&tagger-match-all=on&tagger-01-header=province%2Fstate&tagger-01-tag=%23adm1%2Bname&tagger-02-header=country%2Fregion&tagger-02-tag=%23country%2Bname&tagger-03-header=lat&tagger-03-tag=%23geo%2Blat&tagger-04-header=long&tagger-04-tag=%23geo%2Blon&header-row=1&url=https%3A%2F%2Fraw.githubusercontent.com%2FCSSEGISandData%2FCOVID-19%2Fmaster%2Fcsse_covid_19_data%2Fcsse_covid_19_time_series%2Ftime_series_covid19_confirmed_global.csv")
+```
+
+
+###Looking at Grand Totals by Worldwide Region
+At the most basic level, I wanted to look at the total confirmed cases, deaths, and recovered based on regions. The regions in the dataset are Africa, Americas, Asia, Europe and Oceania. 
+First, is the table and graph for confirmed cases, followed by deaths and then recovered. 
+
+```{r}
+GlobalConfirmed1<-
+GlobalConfirmed%>%
+  group_by(Region.Name)%>%
+  summarise(totalconfirmed = sum((X4.11.20)))
+GlobalConfirmed1<-
+ GlobalConfirmed1[-2,]
+GlobalConfirmed1<-
+  GlobalConfirmed1[-1,]
+head(GlobalConfirmed1)
+```
+
+```{r}
+GlobalConfirmed1%>%
+  ggplot(aes(x=Region.Name, y=totalconfirmed)) +
+  geom_bar(stat = "identity",aes(color=Region.Name, fill=Region.Name)) +
+  ggtitle("Total Confirmed Cases by Region") +
+  ylim(0, 875000)
+```
+
+Looking at the graph above, it appears as though Europe has the most cases with the Americas behind. These graphs need to be further divided to get the entire picture, as the majority of cases in the Americas are in the United States. Certain regions are dominated by certains countries. 
+
+
+```{r}
+GlobalDeaths1<-
+GlobalDeaths%>%
+  group_by(Region.Name)%>%
+  summarise(Total_Deaths = sum((X4.11.20)))
+GlobalDeaths1<-
+ GlobalDeaths1[-2,] #get rid of useless row
+GlobalDeaths1<-
+  GlobalDeaths1[-1,] #get rid of useless row 
+head(GlobalDeaths1)
+```
+
+```{r}
+GlobalDeaths1%>%
+  ggplot(aes(x=Region.Name, y=Total_Deaths)) +
+  geom_bar(stat = "identity",aes(color=Region.Name, fill=Region.Name)) +
+  ggtitle("Total Deaths by Region") +
+  ylim(0, 75000)
+```
+
+Unfortunately, Europe has the highest total number of deaths as well. It must be noted that many European countries are a few weeks ahead of the outbreak in the Americas, specifically the United States so this can change. These graphs also do not take into account total proportion of a population that have been infected, these are just pure counts. 
+
+```{r}
+GlobalRecovered1<-
+GlobalRecovered%>%
+  group_by(Region.Name)%>%
+  summarise(Total_Recovered = sum((X4.11.20)))
+GlobalRecovered1<-
+ GlobalRecovered1[-2,]
+GlobalRecovered1<-
+  GlobalRecovered1[-1,]
+head(GlobalRecovered1)
+```
+
+```{r}
+GlobalRecovered1%>%
+  ggplot(aes(x=Region.Name, y=Total_Recovered)) +
+  geom_bar(stat = "identity",aes(color=Region.Name, fill=Region.Name)) +
+  ggtitle("Total Recovered by Region")
+```
+
+Upliftingly, Europe does also have the highest amount of total recovered. Sadly, the Americas is still low on the recovered as we are nearing the peak of the outbreak in the United States. If the data we currently have is correct, the Asia region was able to contain their outbreak, mostly China, and keep deaths relatively low with recoveries high. 
+
+
+These graphs are fairly basic, and do not give us great insight into the outbreak. To further investigate this pandemic, it is necessary to look at a few countries from each of the regions, and their specific plan to combat the spread of the coronavirus. 
+
+
+###Data Wrangling: Separating the Totals by Country 
+
+First, I filtered the data tables so that only the name of the country and the confirmed cases for each date were included.
+```{r}
+GlobalConfirmedWide<-
+ GlobalConfirmed[,-c(1,3,4,86,87,88,89,90,91,92)] #keeps only country and dates 
+head(GlobalConfirmedWide)
+```
+
+
+Afterwards, I combined the same countries together so that each case represented one country completley. 
+
+```{r}
+GlobalConfirmedWide1<-
+GlobalConfirmedWide%>%
+  group_by(Country.Region)%>%
+  summarise(S1.22.20 =sum(X1.22.20), S1.23.20 =sum(X1.23.20), S1.24.20 =sum(X1.24.20), S1.25.20 =sum(X1.25.20), S1.26.20 =sum(X1.26.20), S1.27.20 =sum(X1.27.20), S1.28.20 =sum(X1.28.20), S1.29.20 =sum(X1.29.20), S1.30.20 =sum(X1.30.20), S1.31.20 =sum(X1.31.20), S2.1.20 =sum(X2.1.20), S2.2.20 =sum(X2.2.20), S2.3.20 =sum(X2.3.20), S2.4.20 =sum(X2.4.20), S2.5.20 =sum(X2.5.20), S2.6.20 =sum(X2.6.20), S2.7.20 =sum(X2.7.20), S2.8.20 =sum(X2.8.20), S2.9.20 =sum(X2.9.20), S2.10.20 =sum(X2.10.20), S2.11.20 =sum(X2.11.20), S2.12.20 =sum(X2.12.20), S2.13.20 =sum(X2.13.20), S2.14.20 =sum(X2.14.20), S2.15.20 =sum(X2.15.20), S2.16.20 =sum(X2.16.20), S2.17.20 =sum(X2.17.20), S2.18.20 =sum(X2.18.20), S2.19.20 =sum(X2.19.20), S2.20.20 =sum(X2.20.20), S2.21.20 =sum(X2.21.20), S2.22.20 =sum(X2.22.20), S2.23.20 =sum(X2.23.20), S2.24.20 =sum(X2.24.20), S2.25.20 =sum(X2.25.20), S2.26.20 =sum(X2.26.20), S2.27.20 =sum(X2.27.20), S2.28.20 =sum(X2.28.20), S2.29.20 =sum(X2.29.20), S3.1.20 =sum(X3.1.20), S3.2.20 =sum(X3.2.20), S3.3.20 =sum(X3.3.20), S3.4.20 =sum(X3.4.20), S3.5.20 =sum(X3.5.20), S3.6.20 =sum(X3.6.20), S3.7.20 =sum(X3.7.20), S3.8.20 =sum(X3.8.20), S3.9.20 =sum(X3.9.20), S3.10.20 =sum(X3.10.20), S3.11.20 =sum(X3.11.20), S3.12.20 =sum(X3.12.20), S3.13.20 =sum(X3.13.20), S3.14.20 =sum(X3.14.20), S3.15.20 =sum(X3.15.20), S3.16.20 =sum(X3.16.20), S3.17.20 =sum(X3.18.20), S3.19.20 =sum(X3.19.20), S3.20.20 =sum(X3.20.20), S3.21.20 =sum(X3.21.20), S3.22.20 =sum(X3.22.20), S3.23.20 =sum(X3.23.20), S3.24.20 =sum(X3.24.20), S3.25.20 =sum(X3.25.20), S3.26.20 =sum(X3.26.20), S3.27.20 =sum(X3.27.20), S3.28.20 =sum(X3.28.20), S3.29.20 =sum(X3.29.20), S3.30.20 =sum(X3.30.20), S3.31.20 =sum(X3.31.20), S4.1.20 =sum(X4.1.20), S4.2.20 =sum(X4.2.20), S4.3.20 =sum(X4.3.20), S4.4.20 =sum(X4.4.20), S4.5.20 =sum(X4.5.20), S4.6.20 =sum(X4.6.20), S4.7.20 =sum(X4.7.20), S4.8.20 =sum(X4.8.20), S4.9.20 =sum(X4.9.20), S4.10.20 =sum(X4.10.20), S4.11.20 =sum(X4.11.20)) #to combine countries together that had various cases per province 
+```
+
+
+Next, I wanted the dates as the cases and the countries as the variables, so I transposed the data table. 
+```{r}
+GlobalConfirmedWide2<-
+  t(GlobalConfirmedWide1)
+GlobalConfirmedWide2<-
+  GlobalConfirmedWide2[,-1] #removes blank first column 
+
+
+colnames(GlobalConfirmedWide2) = GlobalConfirmedWide2[1,]
+GlobalConfirmedWide2 = GlobalConfirmedWide2[-1, ] #to make the countries the variable names
+
+GlobalConfirmedWide2<-as.data.frame(GlobalConfirmedWide2) #to convert from matrix to data frame 
+head(GlobalConfirmedWide2)  #only showing output for this first one because they are long 
+```
+
+Now, I can use this data to create graphs that show changes in confirmed cases per country over time. 
+
+
+Afterwards, this same process was repeated for deaths. 
+
+```{r}
+GlobalDeathsWide<-
+  GlobalDeaths[,-c(1,3,4,86,87,88,89,90,91,92)] #keeps only country region and dates 
+```
+
+```{r}
+GlobalDeathsWide1<-
+GlobalDeathsWide%>%
+  group_by(Country.Region)%>%
+  summarise(S1.22.20 =sum(X1.22.20), S1.23.20 =sum(X1.23.20), S1.24.20 =sum(X1.24.20), S1.25.20 =sum(X1.25.20), S1.26.20 =sum(X1.26.20), S1.27.20 =sum(X1.27.20), S1.28.20 =sum(X1.28.20), S1.29.20 =sum(X1.29.20), S1.30.20 =sum(X1.30.20), S1.31.20 =sum(X1.31.20), S2.1.20 =sum(X2.1.20), S2.2.20 =sum(X2.2.20), S2.3.20 =sum(X2.3.20), S2.4.20 =sum(X2.4.20), S2.5.20 =sum(X2.5.20), S2.6.20 =sum(X2.6.20), S2.7.20 =sum(X2.7.20), S2.8.20 =sum(X2.8.20), S2.9.20 =sum(X2.9.20), S2.10.20 =sum(X2.10.20), S2.11.20 =sum(X2.11.20), S2.12.20 =sum(X2.12.20), S2.13.20 =sum(X2.13.20), S2.14.20 =sum(X2.14.20), S2.15.20 =sum(X2.15.20), S2.16.20 =sum(X2.16.20), S2.17.20 =sum(X2.17.20), S2.18.20 =sum(X2.18.20), S2.19.20 =sum(X2.19.20), S2.20.20 =sum(X2.20.20), S2.21.20 =sum(X2.21.20), S2.22.20 =sum(X2.22.20), S2.23.20 =sum(X2.23.20), S2.24.20 =sum(X2.24.20), S2.25.20 =sum(X2.25.20), S2.26.20 =sum(X2.26.20), S2.27.20 =sum(X2.27.20), S2.28.20 =sum(X2.28.20), S2.29.20 =sum(X2.29.20), S3.1.20 =sum(X3.1.20), S3.2.20 =sum(X3.2.20), S3.3.20 =sum(X3.3.20), S3.4.20 =sum(X3.4.20), S3.5.20 =sum(X3.5.20), S3.6.20 =sum(X3.6.20), S3.7.20 =sum(X3.7.20), S3.8.20 =sum(X3.8.20), S3.9.20 =sum(X3.9.20), S3.10.20 =sum(X3.10.20), S3.11.20 =sum(X3.11.20), S3.12.20 =sum(X3.12.20), S3.13.20 =sum(X3.13.20), S3.14.20 =sum(X3.14.20), S3.15.20 =sum(X3.15.20), S3.16.20 =sum(X3.16.20), S3.17.20 =sum(X3.18.20), S3.19.20 =sum(X3.19.20), S3.20.20 =sum(X3.20.20), S3.21.20 =sum(X3.21.20), S3.22.20 =sum(X3.22.20), S3.23.20 =sum(X3.23.20), S3.24.20 =sum(X3.24.20), S3.25.20 =sum(X3.25.20), S3.26.20 =sum(X3.26.20), S3.27.20 =sum(X3.27.20), S3.28.20 =sum(X3.28.20), S3.29.20 =sum(X3.29.20), S3.30.20 =sum(X3.30.20), S3.31.20 =sum(X3.31.20), S4.1.20 =sum(X4.1.20), S4.2.20 =sum(X4.2.20), S4.3.20 =sum(X4.3.20), S4.4.20 =sum(X4.4.20), S4.5.20 =sum(X4.5.20), S4.6.20 =sum(X4.6.20), S4.7.20 =sum(X4.7.20), S4.8.20 =sum(X4.8.20), S4.9.20 =sum(X4.9.20), S4.10.20 =sum(X4.10.20), S4.11.20 =sum(X4.11.20)) #this added up countries together that had multiple cases due to various provinces
+```
+
+```{r}
+GlobalDeathsWide2<-
+  t(GlobalDeathsWide1)
+GlobalDeathsWide2<-
+  GlobalDeathsWide2[,-1] #removes blank first column 
+
+colnames(GlobalDeathsWide2) = GlobalDeathsWide2[1,] #make countries the variable names 
+GlobalDeathsWide2 = GlobalDeathsWide2[-1, ]
+
+GlobalDeathsWide2<-as.data.frame(GlobalDeathsWide2) #make matrix a data frame 
+
+```
+
+
+Lastly, this process was repeated for recovered cases. 
+
+```{r}
+GlobalRecoveredWide<-
+  GlobalRecovered[,-c(1,3,4,86,87,88,89,90,91,92)] #keeps only country region and dates 
+```
+
+```{r}
+GlobalRecoveredWide1<-
+GlobalRecoveredWide%>%
+  group_by(Country.Region)%>%
+  summarise(S1.22.20 =sum(X1.22.20), S1.23.20 =sum(X1.23.20), S1.24.20 =sum(X1.24.20), S1.25.20 =sum(X1.25.20), S1.26.20 =sum(X1.26.20), S1.27.20 =sum(X1.27.20), S1.28.20 =sum(X1.28.20), S1.29.20 =sum(X1.29.20), S1.30.20 =sum(X1.30.20), S1.31.20 =sum(X1.31.20), S2.1.20 =sum(X2.1.20), S2.2.20 =sum(X2.2.20), S2.3.20 =sum(X2.3.20), S2.4.20 =sum(X2.4.20), S2.5.20 =sum(X2.5.20), S2.6.20 =sum(X2.6.20), S2.7.20 =sum(X2.7.20), S2.8.20 =sum(X2.8.20), S2.9.20 =sum(X2.9.20), S2.10.20 =sum(X2.10.20), S2.11.20 =sum(X2.11.20), S2.12.20 =sum(X2.12.20), S2.13.20 =sum(X2.13.20), S2.14.20 =sum(X2.14.20), S2.15.20 =sum(X2.15.20), S2.16.20 =sum(X2.16.20), S2.17.20 =sum(X2.17.20), S2.18.20 =sum(X2.18.20), S2.19.20 =sum(X2.19.20), S2.20.20 =sum(X2.20.20), S2.21.20 =sum(X2.21.20), S2.22.20 =sum(X2.22.20), S2.23.20 =sum(X2.23.20), S2.24.20 =sum(X2.24.20), S2.25.20 =sum(X2.25.20), S2.26.20 =sum(X2.26.20), S2.27.20 =sum(X2.27.20), S2.28.20 =sum(X2.28.20), S2.29.20 =sum(X2.29.20), S3.1.20 =sum(X3.1.20), S3.2.20 =sum(X3.2.20), S3.3.20 =sum(X3.3.20), S3.4.20 =sum(X3.4.20), S3.5.20 =sum(X3.5.20), S3.6.20 =sum(X3.6.20), S3.7.20 =sum(X3.7.20), S3.8.20 =sum(X3.8.20), S3.9.20 =sum(X3.9.20), S3.10.20 =sum(X3.10.20), S3.11.20 =sum(X3.11.20), S3.12.20 =sum(X3.12.20), S3.13.20 =sum(X3.13.20), S3.14.20 =sum(X3.14.20), S3.15.20 =sum(X3.15.20), S3.16.20 =sum(X3.16.20), S3.17.20 =sum(X3.18.20), S3.19.20 =sum(X3.19.20), S3.20.20 =sum(X3.20.20), S3.21.20 =sum(X3.21.20), S3.22.20 =sum(X3.22.20), S3.23.20 =sum(X3.23.20), S3.24.20 =sum(X3.24.20), S3.25.20 =sum(X3.25.20), S3.26.20 =sum(X3.26.20), S3.27.20 =sum(X3.27.20), S3.28.20 =sum(X3.28.20), S3.29.20 =sum(X3.29.20), S3.30.20 =sum(X3.30.20), S3.31.20 =sum(X3.31.20), S4.1.20 =sum(X4.1.20), S4.2.20 =sum(X4.2.20), S4.3.20 =sum(X4.3.20), S4.4.20 =sum(X4.4.20), S4.5.20 =sum(X4.5.20), S4.6.20 =sum(X4.6.20), S4.7.20 =sum(X4.7.20), S4.8.20 =sum(X4.8.20), S4.9.20 =sum(X4.9.20), S4.10.20 =sum(X4.10.20), S4.11.20 =sum(X4.11.20)) #this added up countries together that had multiple cases due to various provinces
+```
+
+```{r}
+GlobalRecoveredWide2<-
+  t(GlobalRecoveredWide1)
+GlobalRecoveredWide2<-
+  GlobalRecoveredWide2[,-1] #getting rid of unecessary column
+
+colnames(GlobalRecoveredWide2) = GlobalRecoveredWide2[1,]
+GlobalRecoveredWide2 = GlobalRecoveredWide2[-1, ]
+
+GlobalRecoveredWide2<-as.data.frame(GlobalRecoveredWide2) #change from matrix to data frame 
+
+```
+
+
+###Comparing Countries 
+
+For right now, I am going to only look at three different countries responses to coronavirus: China, Germany, and the United States. This allows us to look at different areas of the world, with Asia, Europe, and North America. 
+
+To begin, the three countries have to be filtered from the rest of the data tables. 
+
+
+```{r}
+CountriesRecovered<- #create a data table with just 3 countries recovered data 
+GlobalRecoveredWide2%>%
+  select(China, Germany, US)%>%
+  mutate(Dates = gsub("S", "", rownames(GlobalRecoveredWide2)))
+CountriesRecovered$Dates<-as.Date(CountriesRecovered$Dates, "%m.%d.%y")
+CountriesRecovered$China<-as.numeric(CountriesRecovered$China) #change from factor to numeric 
+CountriesRecovered$Germany<-as.numeric(CountriesRecovered$Germany)
+CountriesRecovered$US<-as.numeric(CountriesRecovered$US)
+
+CountriesDeaths<- #create a data table with 3 countries deaths 
+  GlobalDeathsWide2%>%
+  select(China, Germany, US)%>%
+  mutate(Dates = gsub("S", "", rownames(GlobalDeathsWide2)))
+CountriesDeaths$Dates<- as.Date(CountriesDeaths$Dates, "%m.%d.%y")
+CountriesDeathsChina<-as.numeric(CountriesDeaths$China) #change from factor to numeric 
+CountriesDeathsGermany<-as.numeric(CountriesDeaths$Germany)
+CountriesDeaths$US<-as.numeric(CountriesDeaths$US)
+
+CountriesConfirmed<- #create a data table with 3 countries confirmed cases 
+  GlobalConfirmedWide2%>%
+  select(China, Germany, US)%>%
+  mutate(Dates = gsub("S", "", rownames(GlobalConfirmedWide2))) 
+
+CountriesConfirmed$Dates<- as.Date(CountriesConfirmed$Dates, "%m.%d.%y")
+CountriesConfirmed$China<-as.numeric(CountriesConfirmed$China) #change from factor to numeric 
+CountriesConfirmed$Germany<-as.numeric(CountriesConfirmed$Germany)
+CountriesConfirmed$US<-as.numeric(CountriesConfirmed$US)
+
+head(CountriesConfirmed)
+```
+
+
+Now that the US, China, and Germany have been filtered out with all the variables being correctly renamed, some analysis can be done. 
+
+```{r}
+CountriesConfirmed%>%
+  ggplot(aes(x=Dates, y=US)) +
+  geom_smooth()
+```
+
+The graph above shows the total number of 
+
+
+
+
+
+
+
+
+.
+
+
+
+
