@@ -59,15 +59,18 @@ NA.
 
 
 (A) .Rmd Line number(s) for use of mulitple different geoms:  
+Line 46 I use geom_bar but in line 242 I used geom_smooth. 
 
 (B) .Rmd Line number(s) for use of multiple aesthetics:  
-
+Line 90 used aes to define the graph variables and then in line 91 used aesthetics for the color of the bars as well as their fill color. Line 304, used aesthetic to color the vertical bars to look at the different COVID-19 responses of the countries. 
 (C) .Rmd Line number(s) for use of layered graphics:  
+Line 303 included title, and also in 302 included a smoother for the data. Line 304 and 305 I incldued vertical lines, that went over the data to show when COVID-19 protocols were implemented in Germany. 
 
 (D) .Rmd Line number(s) for use of leaflet maps:  
+NA.
 
 (E) .Rmd Line number(s) for use of decision tree or dendogram results:    
-
+NA. 
 
 
 
